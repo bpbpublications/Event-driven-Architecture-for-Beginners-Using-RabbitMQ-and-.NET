@@ -1,0 +1,270 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Serilog.Sinks.Splunk</name>
+    </assembly>
+    <members>
+        <member name="T:Serilog.Sinks.Splunk.CompactSplunkJsonFormatter">
+            <summary>
+            Renders log events into a Compact JSON format for consumption by Splunk.
+            </summary>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.CompactSplunkJsonFormatter.#ctor(System.Boolean,System.String,System.String,System.String,System.String)">
+            <summary>
+            Construct a <see cref="T:Serilog.Sinks.Splunk.CompactSplunkJsonFormatter"/>.
+            </summary>
+            <param name="source">The source of the event</param>
+            <param name="sourceType">The source type of the event</param>
+            <param name="host">The host of the event</param>
+            <param name="index">The Splunk index to log to</param>
+            <param name="renderTemplate">If true, the template used will be rendered and written to the output as a property named MessageTemplate</param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.CompactSplunkJsonFormatter.Format(Serilog.Events.LogEvent,System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Serilog.Sinks.Splunk.CustomField">
+            <summary>
+            A Class for storing CustomField. They are sort of key,value pair. In simpler form key as string and value as single string, but could also be key and list of strings.
+            </summary>
+        </member>
+        <member name="P:Serilog.Sinks.Splunk.CustomField.Name">
+            <summary>
+            the fieldsname eg: role, version,
+            </summary>
+        </member>
+        <member name="P:Serilog.Sinks.Splunk.CustomField.ValueList">
+            <summary>
+            All values even simple string are stored as a list
+            </summary>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.CustomField.#ctor(System.String,System.String)">
+            <summary>
+            constructor for a simple fieldname and a value both are strings
+            </summary>
+            <param name="name">Name of filed to be indexed by Splunk. Eg Role,Version,Channel</param>
+            <param name="value">Value of keypair. Eg. Test,1.08, RestService</param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.CustomField.#ctor(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Constructor for Name and array of values
+            </summary>
+            <param name="name">Name of field eg TypeOfResource</param>
+            <param name="value">Array of values that should be connected with field.Eg Backend,Service,Rest</param>
+        </member>
+        <member name="T:Serilog.Sinks.Splunk.CustomFields">
+            <summary>
+            Class for storing CustomFields that splunk will index for the event but will not be displayed in the event.
+            They are the same for all events. Could could contain type of server or releasecode see: http://dev.splunk.com/view/event-collector/SP-CAAAFB6
+            </summary>
+        </member>
+        <member name="P:Serilog.Sinks.Splunk.CustomFields.CustomFieldList">
+            <summary>
+            The List of all CustomFields of type CustomField
+            </summary>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.CustomFields.#ctor">
+            <summary>
+            Constructor with no inital data
+            </summary>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.CustomFields.#ctor(Serilog.Sinks.Splunk.CustomField)">
+            <summary>
+            Constructor with simple CustomField
+            </summary>
+            <param name="customField"></param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.CustomFields.#ctor(System.Collections.Generic.List{Serilog.Sinks.Splunk.CustomField})">
+            <summary>
+            Constructor with a list of CustomFields
+            </summary>
+        </member>
+        <member name="T:Serilog.Sinks.Splunk.EventCollectorSink">
+            <summary>
+            A sink to log to the Event Collector available in Splunk 6.3
+            </summary>
+        </member>
+        <member name="F:Serilog.Sinks.Splunk.EventCollectorSink.HttpEventCollectorApplicationErrors">
+            <summary>
+            Taken from Splunk.Logging.Common
+            </summary>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.EventCollectorSink.#ctor(System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.IFormatProvider,System.Boolean)">
+            <summary>
+            Creates a new instance of the sink
+            </summary>
+            <param name="splunkHost">The host of the Splunk instance with the Event collector configured</param>
+            <param name="eventCollectorToken">The token to use when authenticating with the event collector</param>
+            <param name="batchSizeLimit">The size of the batch when sending to the event collector</param>
+            <param name="formatProvider">The format provider used when rendering the message</param>
+            <param name="renderTemplate">Whether to render the message template</param>
+            <param name="batchIntervalInSeconds">The interval in seconds that batching should occur</param>
+            <param name="queueLimit">Maximum number of events in the queue</param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.EventCollectorSink.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},System.IFormatProvider,System.Boolean,System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Creates a new instance of the sink
+            </summary>
+            <param name="splunkHost">The host of the Splunk instance with the Event collector configured</param>
+            <param name="eventCollectorToken">The token to use when authenticating with the event collector</param>
+            <param name="uriPath">Change the default endpoint of the Event Collector e.g. services/collector/event</param>
+            <param name="batchSizeLimit">The size of the batch when sending to the event collector</param>
+            <param name="formatProvider">The format provider used when rendering the message</param>
+            <param name="renderTemplate">Whether to render the message template</param>
+            <param name="batchIntervalInSeconds">The interval in seconds that batching should occur</param>
+            <param name="queueLimit">Maximum number of events in the queue</param>
+            <param name="index">The Splunk index to log to</param>
+            <param name="source">The source of the event</param>
+            <param name="sourceType">The source type of the event</param>
+            <param name="host">The host of the event</param>
+            <param name="messageHandler">The handler used to send HTTP requests</param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.EventCollectorSink.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,Serilog.Sinks.Splunk.CustomFields,System.Int32,System.Int32,System.Nullable{System.Int32},System.IFormatProvider,System.Boolean,System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Creates a new instance of the sink with Customfields
+            </summary>
+            <param name="splunkHost">The host of the Splunk instance with the Event collector configured</param>
+            <param name="eventCollectorToken">The token to use when authenticating with the event collector</param>
+            <param name="uriPath">Change the default endpoint of the Event Collector e.g. services/collector/event</param>
+            <param name="batchSizeLimit">The size of the batch when sending to the event collector</param>
+            <param name="queueLimit">Maximum number of events in the queue</param>
+            <param name="formatProvider">The format provider used when rendering the message</param>
+            <param name="renderTemplate">Whether to render the message template</param>
+            <param name="batchIntervalInSeconds">The interval in seconds that batching should occur</param>
+            <param name="index">The Splunk index to log to</param>
+            <param name="fields">Add extra CustomExtraFields for Splunk to index</param>
+            <param name="source">The source of the event</param>
+            <param name="sourceType">The source type of the event</param>
+            <param name="host">The host of the event</param>
+            <param name="messageHandler">The handler used to send HTTP requests</param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.EventCollectorSink.#ctor(System.String,System.String,System.String,System.Int32,System.Int32,System.Nullable{System.Int32},Serilog.Formatting.ITextFormatter,System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Creates a new instance of the sink
+            </summary>
+            <param name="splunkHost">The host of the Splunk instance with the Event collector configured</param>
+            <param name="eventCollectorToken">The token to use when authenticating with the event collector</param>
+            <param name="uriPath">Change the default endpoint of the Event Collector e.g. services/collector/event</param>
+            <param name="batchSizeLimit">The size of the batch when sending to the event collector</param>
+            <param name="batchIntervalInSeconds">The interval in seconds that batching should occur</param>
+            <param name="queueLimit">Maximum number of events in the queue</param>
+            <param name="jsonFormatter">The text formatter used to render log events into a JSON format for consumption by Splunk</param>
+            <param name="messageHandler">The handler used to send HTTP requests</param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.EventCollectorSink.EmitBatchAsync(System.Collections.Generic.IEnumerable{Serilog.Events.LogEvent})">
+            <summary>
+                Emit a batch of log events, running asynchronously.
+            </summary>
+            <param name="events">The events to emit.</param>
+            <remarks>
+                Override either <see cref="M:Serilog.Sinks.PeriodicBatching.PeriodicBatchingSink.EmitBatch(System.Collections.Generic.IEnumerable{Serilog.Events.LogEvent})" /> or <see cref="M:Serilog.Sinks.PeriodicBatching.PeriodicBatchingSink.EmitBatchAsync(System.Collections.Generic.IEnumerable{Serilog.Events.LogEvent})" />, not both.
+            </remarks>
+        </member>
+        <member name="T:Serilog.Sinks.Splunk.SplunkJsonFormatter">
+            <inheritdoc />
+            <summary>
+            Renders log events into a default JSON format for consumption by Splunk.
+            </summary>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.SplunkJsonFormatter.#ctor(System.Boolean,System.IFormatProvider)">
+            <inheritdoc />
+            <summary>
+            Construct a <see cref="T:Serilog.Sinks.Splunk.SplunkJsonFormatter" />.
+            </summary>
+            <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
+            <param name="renderTemplate">If true, the template used will be rendered and written to the output as a property named MessageTemplate</param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.SplunkJsonFormatter.#ctor(System.Boolean,System.IFormatProvider,System.String,System.String,System.String,System.String)">
+            <summary>
+            Construct a <see cref="T:Serilog.Sinks.Splunk.SplunkJsonFormatter"/>.
+            </summary>
+            <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
+            <param name="renderTemplate">If true, the template used will be rendered and written to the output as a property named MessageTemplate</param>
+            <param name="index">The Splunk index to log to</param>
+            <param name="source">The source of the event</param>
+            <param name="sourceType">The source type of the event</param>
+            <param name="host">The host of the event</param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.SplunkJsonFormatter.#ctor(System.Boolean,System.IFormatProvider,System.String,System.String,System.String,System.String,Serilog.Sinks.Splunk.CustomFields)">
+            <summary>
+            Construct a <see cref="T:Serilog.Sinks.Splunk.SplunkJsonFormatter"/>.
+            </summary>
+            <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
+            <param name="renderTemplate">If true, the template used will be rendered and written to the output as a property named MessageTemplate</param>
+            <param name="index">The Splunk index to log to</param>
+            <param name="source">The source of the event</param>
+            <param name="sourceType">The source type of the event</param>
+            <param name="host">The host of the event</param>
+            <param name="customFields">Object that describes extra splunk fields that should be indexed with event see: http://dev.splunk.com/view/event-collector/SP-CAAAFB6 </param>
+        </member>
+        <member name="M:Serilog.Sinks.Splunk.SplunkJsonFormatter.Format(Serilog.Events.LogEvent,System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Serilog.SplunkLoggingConfigurationExtensions">
+            <summary>
+                Fluent configuration methods for Logger configuration
+            </summary>
+        </member>
+        <member name="M:Serilog.SplunkLoggingConfigurationExtensions.EventCollector(Serilog.Configuration.LoggerSinkConfiguration,System.String,System.String,System.String,System.String,System.String,System.String,System.String,Serilog.Events.LogEventLevel,System.IFormatProvider,System.Boolean,System.Int32,System.Int32,System.Nullable{System.Int32},System.Net.Http.HttpMessageHandler,Serilog.Core.LoggingLevelSwitch)">
+            <summary>
+                Adds a sink that writes log events as to a Splunk instance via the HTTP Event Collector.
+            </summary>
+            <param name="configuration">The logger config</param>
+            <param name="splunkHost">The Splunk host that is configured with an Event Collector</param>
+            <param name="eventCollectorToken">The token provided to authenticate to the Splunk Event Collector</param>
+            <param name="uriPath">Change the default endpoint of the Event Collector e.g. services/collector/event</param>
+            <param name="index">The Splunk index to log to</param>
+            <param name="source">The source of the event</param>
+            <param name="sourceType">The source type of the event</param>
+            <param name="host">The host of the event</param>
+            <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
+            <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
+            <param name="renderTemplate">If true, the message template will be rendered</param>
+            <param name="batchIntervalInSeconds">The interval in seconds that the queue should be instpected for batching</param>
+            <param name="batchSizeLimit">The size of the batch</param>
+            <param name="queueLimit">Maximum number of events in the queue</param>
+            <param name="messageHandler">The handler used to send HTTP requests</param>
+            <param name="levelSwitch">A switch allowing the pass-through minimum level to be changed at runtime.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Serilog.SplunkLoggingConfigurationExtensions.EventCollector(Serilog.Configuration.LoggerSinkConfiguration,System.String,System.String,Serilog.Formatting.ITextFormatter,System.String,Serilog.Events.LogEventLevel,System.Int32,System.Int32,System.Nullable{System.Int32},System.Net.Http.HttpMessageHandler,Serilog.Core.LoggingLevelSwitch)">
+            <summary>
+                Adds a sink that writes log events as to a Splunk instance via the HTTP Event Collector.
+            </summary>
+            <param name="configuration">The logger config</param>
+            <param name="splunkHost">The Splunk host that is configured with an Event Collector</param>
+            <param name="eventCollectorToken">The token provided to authenticate to the Splunk Event Collector</param>
+            <param name="jsonFormatter">The text formatter used to render log events into a JSON format for consumption by Splunk</param>
+            <param name="uriPath">Change the default endpoint of the Event Collector e.g. services/collector/event</param>
+            <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
+            <param name="batchIntervalInSeconds">The interval in seconds that the queue should be instpected for batching</param>
+            <param name="batchSizeLimit">The size of the batch</param>
+            <param name="queueLimit">Maximum number of events in the queue</param>
+            <param name="messageHandler">The handler used to send HTTP requests</param>
+            <param name="levelSwitch">A switch allowing the pass-through minimum level to be changed at runtime.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Serilog.SplunkLoggingConfigurationExtensions.EventCollector(Serilog.Configuration.LoggerSinkConfiguration,System.String,System.String,Serilog.Sinks.Splunk.CustomFields,System.String,System.String,System.String,System.String,System.String,Serilog.Events.LogEventLevel,System.IFormatProvider,System.Boolean,System.Int32,System.Int32,System.Nullable{System.Int32},System.Net.Http.HttpMessageHandler,Serilog.Core.LoggingLevelSwitch)">
+            <summary>
+                Adds a sink that writes log events as to a Splunk instance via the HTTP Event Collector.
+            </summary>
+            <param name="configuration">The logger config</param>
+            <param name="splunkHost">The Splunk host that is configured with an Event Collector</param>
+            <param name="eventCollectorToken">The token provided to authenticate to the Splunk Event Collector</param>
+            <param name="uriPath">Change the default endpoint of the Event Collector e.g. services/collector/event</param>
+            <param name="index">The Splunk index to log to</param>
+            <param name="source">The source of the event</param>
+            <param name="sourceType">The source type of the event</param>
+            <param name="host">The host of the event</param>
+            <param name="restrictedToMinimumLevel">The minimum log event level required in order to write an event to the sink.</param>
+            <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
+            <param name="renderTemplate">If ture, the message template will be rendered</param>
+            <param name="batchIntervalInSeconds">The interval in seconds that the queue should be instpected for batching</param>
+            <param name="batchSizeLimit">The size of the batch</param>
+            <param name="queueLimit">Maximum number of events in the queue</param>
+            <param name="messageHandler">The handler used to send HTTP requests</param>
+            <param name="levelSwitch">A switch allowing the pass-through minimum level to be changed at runtime.</param>
+            <param name="fields">Customfields that will be indexed in splunk with this event</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
